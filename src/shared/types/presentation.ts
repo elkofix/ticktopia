@@ -1,20 +1,9 @@
+import { Event } from "./event";
+
 export interface Presentation {
   idPresentation: string;
   place: string;
-  event: {
-    id: string;
-    name: string;
-    bannerPhotoUrl: string;
-    isPublic: boolean;
-    user: {
-      id: string;
-      email: string;
-      name: string;
-      lastname: string;
-      isActive: boolean;
-      roles: string[];
-    };
-  };
+  event: Event;
   capacity: number;
   price: number;
   openDate: string;

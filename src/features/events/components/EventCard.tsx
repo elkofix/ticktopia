@@ -8,9 +8,9 @@ interface EventCardProps {
 
 export function EventCard({ event }: EventCardProps) {
   return (
-    <div className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+    <div className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
       {/* Event Banner */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 overflow-hidden flex-shrink-0">
         <Image
           src={event.bannerPhotoUrl}
           alt={event.name}
@@ -36,32 +36,34 @@ export function EventCard({ event }: EventCardProps) {
       </div>
 
       {/* Event Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand transition-colors">
+      <div className="p-6 flex flex-col flex-grow">
+        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand transition-colors line-clamp-2">
           {event.name}
         </h3>
 
         {/* Organizer Info */}
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="w-8 h-8 bg-gradient-to-r from-brand to-wisteria rounded-full flex items-center justify-center">
+        <div className="flex items-center space-x-3 mb-4 flex-grow">
+          <div className="w-8 h-8 bg-gradient-to-r from-brand to-wisteria rounded-full flex items-center justify-center flex-shrink-0">
             <span className="text-white text-sm font-medium">
               {event.user.name.charAt(0)}
             </span>
           </div>
-          <div>
-            <p className="text-sm font-medium text-gray-900">
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-gray-900 truncate">
               {event.user.name} {event.user.lastname}
             </p>
             <p className="text-xs text-gray-500">Organizador</p>
           </div>
         </div>
 
-        {/* Action Button */}
-        <Link href={`/event/${event.id}`}>
-          <button className="w-full bg-brand text-white py-2 px-4 rounded-lg font-medium hover:bg-brand transition-all duration-200 transform hover:scale-105">
-            Ver Evento
-          </button>
-        </Link>
+        {/* Action Button - Always at bottom */}
+        <div className="mt-auto">
+          <Link href={`/event/${event.id}`}>
+            <button className="w-full bg-brand text-white py-2 px-4 rounded-lg font-medium hover:bg-brand transition-all duration-200 transform hover:scale-105">
+              Ver Evento
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

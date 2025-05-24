@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation';
-import { Event } from '@/shared/types/event';
-import { Presentation } from '@/shared/types/presentation';
-import { getEventData, getEvents } from '@/features/events/events.api';
 import EventDetailBanner from '@/features/events/components/EventDetailBanner';
 import EventPresentationsList from '@/features/events/components/EventPresentationList';
+import { getPresentationsByEventId } from '@/features/presentations/presentation.api';
 
 
 export default async function Page({
@@ -14,14 +12,14 @@ export default async function Page({
   try {
     const { id } = await params
 
-    const { event, presentations } = await getEventData(id);
+    const presentations  = await getPresentationsByEventId(id);
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Event Banner Component */}
-        <EventDetailBanner event={event} />
+        <EventDetailBanner event={presentations[0].event} />
 
         {/* Event Presentations List Component */}
-        <EventPresentationsList presentations={presentations} bannerPhotoUrl={event.bannerPhotoUrl} name={event.name} />
+        <EventPresentationsList presentations={presentations} bannerPhotoUrl={presentations[0].event.bannerPhotoUrl} name={presentations[0].event.name} />
       </div>
     );
   } catch (error) {
