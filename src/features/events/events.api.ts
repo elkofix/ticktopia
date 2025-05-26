@@ -1,3 +1,4 @@
+"use client"
 import axiosClient from "@/shared/lib/axiosClient";
 import { Event, GetEventsParams } from "@/shared/types/event";
 import { Presentation } from "@/shared/types/presentation";
@@ -13,7 +14,7 @@ export async function getEvents(params: GetEventsParams = {}): Promise<Event[]> 
       offset: offset.toString(),
     },
   });
-
+  console.log(res);
   return res.data;
 }
 
