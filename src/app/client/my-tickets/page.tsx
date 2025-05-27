@@ -1,0 +1,20 @@
+import { notFound } from 'next/navigation';
+import { getAllMyTickets } from '@/features/tickets/ticket.api';
+import TicketsList from '@/features/tickets/components/TicketList';
+import { ProtectedRoute } from '@/features/auth/login/components/ProtectedRoute';
+
+export default async function Page() {
+  try {
+    const tickets = await getAllMyTickets();
+    return (
+      <ProtectedRoute requiredRoles={["client"]}>
+        <div>
+          <TicketsList tickets={tickets}  historic={false}/>
+        </div>
+      </ProtectedRoute>
+    );
+  } catch (error) {
+    console.log(error);
+    notFound();
+  }
+}

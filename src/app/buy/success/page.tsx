@@ -66,10 +66,10 @@ export default function PaymentConfirmationPage() {
 
           {/* Botón para ir al perfil */}
           <Link
-            href="/profile"
+            href="/client/my-tickets"
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 ease-in-out transform hover:scale-105 shadow-md inline-block"
           >
-            Ir a mi perfil
+            Ir a Mis Tickets
           </Link>
 
           {/* Texto adicional */}
