@@ -50,6 +50,14 @@ const NAVIGATION_CONFIG: NavigationItem[] = [
         roles: ["admin"],
         priority: 1
     },
+
+    {
+        label: "Perfil",
+        href: "/profile",
+        icon: User,
+        roles: ["admin", "client", "event-manager", "ticketChecker"],
+        priority: 2
+    },
 ]
 
 export default function TopBar() {

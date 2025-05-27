@@ -9,4 +9,3 @@ export async function getAllUsers(): Promise<Omit<User, "password">[]> {
     console.log("lo usuario", res.data);
     return res.data;
 }
-

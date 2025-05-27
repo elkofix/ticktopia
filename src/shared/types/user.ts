@@ -1,5 +1,7 @@
 export interface AuthUser {
     id: string;
+    name: string;
+    lastname: string;
     email: string;
     isActive: boolean;
     roles: string[];
