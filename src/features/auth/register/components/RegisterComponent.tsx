@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { register } from '../../auth.api';
-import { useAuth } from '../../login/hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function RegisterComponent() {
   const [credentials, setCredentials] = useState({
