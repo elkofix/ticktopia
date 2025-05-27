@@ -31,7 +31,6 @@ interface UpdatePresentationDto{
     longitude?: number;
     description?: string;
     city?: string;
-    eventId?: string;
 }
 
 export async function createPresentation(presentation: CreatePresentationDto): Promise<Presentation> {
@@ -41,8 +40,8 @@ export async function createPresentation(presentation: CreatePresentationDto): P
     return res.data;
 }
 
-export async function updatePresentation(presentation: UpdatePresentationDto): Promise<Presentation[]> {
-    const res = await axiosClient.get(`${prefix}`);
+export async function updatePresentation(presentationId:string, presentation: UpdatePresentationDto): Promise<Presentation[]> {
+    const res = await axiosClient.put(`${prefix}/${presentationId}`, {...presentation});
     console.log(JSON.stringify(res.data, null, 2));
     return res.data;
 }

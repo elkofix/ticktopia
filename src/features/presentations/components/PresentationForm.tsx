@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Presentation } from '@/shared/types/presentation';
-import { createPresentation } from '../presentation.client.api';
+import { createPresentation, updatePresentation } from '../presentation.client.api';
 import { DatePicker } from '@/shared/components/DatePicker';
 import { LocationPicker } from '@/shared/components/LocationPicker';
 import { CitySelector } from '@/shared/components/CitySelector';
@@ -14,11 +14,21 @@ interface PresentationFormProps {
   initialData?: Presentation | null;
 }
 
-
+interface UpdatePresentationDto {
+  place?: string;
+  capacity?: number;
+  openDate?: string;
+  startDate?: string;
+  ticketAvailabilityDate?: string;
+  ticketSaleAvailabilityDate?: string;
+  price?: number;
+  latitude?: number;
+  longitude?: number;
+  description?: string;
+  city?: string;
+}
 
 export function PresentationForm({ eventId, initialData }: PresentationFormProps) {
-
-
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -34,6 +44,10 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     description: initialData?.description || '',
     city: initialData?.city || '',
   });
+
+  // Guardamos los datos iniciales para comparar cambios
+  const [initialFormData] = useState(formData);
+  const isEditMode = Boolean(initialData);
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({
@@ -56,23 +70,45 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     }));
   };
 
+  // Función para obtener solo los campos que han cambiado
+  const getChangedFields = (): UpdatePresentationDto => {
+    const changes: UpdatePresentationDto = {};
+    
+    Object.keys(formData).forEach(key => {
+      const typedKey = key as keyof typeof formData;
+      if (formData[typedKey] !== initialFormData[typedKey]) {
+        // @ts-ignore - TypeScript no puede inferir que los tipos coinciden
+        changes[typedKey] = formData[typedKey];
+      }
+    });
+    
+    return changes;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const presentationData = {
-        ...formData,
-        eventId
-      };
-
-      if (initialData) {
-        // TODO: Implementar actualización
-        console.log('Updating presentation:', presentationData);
-        alert('Función de actualización pendiente de implementar');
+      if (isEditMode && initialData?.idPresentation) {
+        const changedFields = getChangedFields();
+        
+        // Solo enviar la actualización si hay cambios
+        if (Object.keys(changedFields).length > 0) {
+          await updatePresentation(initialData.idPresentation, changedFields);
+          console.log('Presentation updated with changes:', changedFields);
+        } else {
+          console.log('No changes detected');
+        }
+        
+        router.push(`/event-manager/events/manage/${eventId}`);
       } else {
+        const presentationData = {
+          ...formData,
+          eventId
+        };
         await createPresentation(presentationData);
-        router.push(`/event-manager/events/edit/${eventId}`);
+        router.push(`/event-manager/events/manage/${eventId}`);
       }
     } catch (error) {
       console.error('Error saving presentation:', error);
@@ -87,8 +123,18 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     const ticketAvailabilityDate = new Date(formData.ticketAvailabilityDate);
     const openDate = new Date(formData.openDate);
     const startDate = new Date(formData.startDate);
-    const currentDate = new Date();
 
+    // Para modo edición, solo validamos el orden de las fechas
+    if (isEditMode) {
+      return (
+        ticketSaleDate < ticketAvailabilityDate &&
+        ticketAvailabilityDate < openDate &&
+        openDate <= startDate
+      );
+    }
+
+    // Para modo creación, validamos orden y que sean futuras
+    const currentDate = new Date();
     return (
       ticketSaleDate < ticketAvailabilityDate &&
       ticketAvailabilityDate < openDate &&
@@ -100,7 +146,6 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     );
   };
 
-
   const isFormValid =
     formData.place &&
     formData.city &&
@@ -109,7 +154,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     formData.ticketAvailabilityDate &&
     formData.ticketSaleAvailabilityDate &&
     formData.capacity > 0 &&
-    formData.price > 0 &&
+    formData.price >= 1000 &&
     areDatesValid();
 
   return (
@@ -132,10 +177,9 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               required
             />
             {!formData.place && (
-              <p className="mt-1 text-sm text-red-500">El lugar no puede estar vacio</p>
+              <p className="mt-1 text-sm text-red-500">El lugar no puede estar vacío</p>
             )}
           </div>
-
 
           {/* Ciudad */}
           <div>
@@ -147,7 +191,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               onCitySelect={(city: string) => handleInputChange('city', city)}
             />
             {!formData.city && (
-              <p className="mt-1 text-sm text-red-500">La ciudad no puede estar vacia</p>
+              <p className="mt-1 text-sm text-red-500">La ciudad no puede estar vacía</p>
             )}
           </div>
 
@@ -181,20 +225,17 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               >
                 <span className="text-xl font-bold">+</span>
               </button>
-              {formData.capacity < 1 && (
-                <p className="mt-1 text-sm text-red-500">La capacidad debe ser mayor a 0</p>
-              )}
             </div>
+            {formData.capacity < 1 && (
+              <p className="mt-1 text-sm text-red-500">La capacidad debe ser mayor a 0</p>
+            )}
           </div>
 
           {/* Precio */}
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Precio por boleto
+              Precio por boleto *
             </label>
-            {formData.price < 1000 && (
-              <p className="mt-1 text-sm text-red-500">El precio debe ser mayor o igual a $1.000</p>
-            )}
             <div className="flex items-center gap-3">
               <span className="text-lg font-medium text-gray-700">$</span>
               <button
@@ -210,7 +251,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
                 value={formData.price}
                 onChange={(e) => handleInputChange('price', parseInt(e.target.value) || 0)}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center font-semibold"
-                min="0"
+                min="1000"
                 step="1000"
               />
 
@@ -222,6 +263,9 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
                 <span className="text-xl font-bold">+</span>
               </button>
             </div>
+            {formData.price < 1000 && (
+              <p className="mt-1 text-sm text-red-500">El precio debe ser mayor o igual a $1.000</p>
+            )}
           </div>
         </div>
       </div>
@@ -241,7 +285,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
             {formData.openDate && formData.startDate && new Date(formData.openDate) > new Date(formData.startDate) && (
               <p className="mt-1 text-sm text-red-500">La fecha de apertura debe ser anterior o igual a la fecha de inicio</p>
             )}
-            {new Date(formData.openDate) < new Date() && (
+            {!isEditMode && new Date(formData.openDate) < new Date() && (
               <p className="mt-1 text-sm text-red-500">La fecha de apertura debe ser en el futuro</p>
             )}
           </div>
@@ -253,7 +297,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               onChange={(date: string) => handleInputChange('startDate', date)}
               required
             />
-            {formData.startDate && new Date(formData.startDate) < new Date() && (
+            {!isEditMode && formData.startDate && new Date(formData.startDate) < new Date() && (
               <p className="mt-1 text-sm text-red-500">La fecha de inicio debe ser en el futuro</p>
             )}
           </div>
@@ -269,10 +313,9 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               new Date(formData.ticketAvailabilityDate) >= new Date(formData.openDate) && (
                 <p className="mt-1 text-sm text-red-500">La disponibilidad debe ser antes de la fecha de apertura</p>
               )}
-            {new Date(formData.ticketAvailabilityDate) < new Date() && (
+            {!isEditMode && new Date(formData.ticketAvailabilityDate) < new Date() && (
               <p className="mt-1 text-sm text-red-500">La fecha de acceso a los boletos debe ser en el futuro</p>
             )}
-
           </div>
 
           <div>
@@ -286,7 +329,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
               new Date(formData.ticketSaleAvailabilityDate) >= new Date(formData.ticketAvailabilityDate) && (
                 <p className="mt-1 text-sm text-red-500">La venta debe estar disponible antes de la disponibilidad general</p>
               )}
-            {new Date(formData.ticketSaleAvailabilityDate) < new Date() && (
+            {!isEditMode && new Date(formData.ticketSaleAvailabilityDate) < new Date() && (
               <p className="mt-1 text-sm text-red-500">La fecha de apertura de ventas debe ser en el futuro</p>
             )}
           </div>
@@ -315,11 +358,11 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
             handleInputChange('longitude', lng);
           }}
         />
-        {!formData.latitude && (
-          <p className="mt-1 text-sm text-red-500">La latitud no puede estar vacia</p>
+        {formData.latitude === 0 && (
+          <p className="mt-1 text-sm text-red-500">La latitud no puede estar vacía</p>
         )}
-        {!formData.longitude && (
-          <p className="mt-1 text-sm text-red-500">La longitud no puede estar vacia</p>
+        {formData.longitude === 0 && (
+          <p className="mt-1 text-sm text-red-500">La longitud no puede estar vacía</p>
         )}
       </div>
 
@@ -334,10 +377,10 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
           rows={4}
           placeholder="Describe detalles adicionales sobre esta presentación..."
         />
+        {!formData.description && (
+          <p className="mt-1 text-sm text-red-500">La descripción no puede estar vacía</p>
+        )}
       </div>
-      {!formData.description && (
-        <p className="mt-1 text-sm text-red-500">La descripción no puede estar vacia</p>
-      )}
 
       {/* Botones de acción */}
       <div className="flex gap-4 justify-end">
@@ -360,10 +403,10 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {initialData ? 'Actualizando...' : 'Creando...'}
+              {isEditMode ? 'Actualizando...' : 'Creando...'}
             </>
           ) : (
-            initialData ? 'Actualizar Presentación' : 'Crear Presentación'
+            isEditMode ? 'Actualizar Presentación' : 'Crear Presentación'
           )}
         </button>
       </div>
