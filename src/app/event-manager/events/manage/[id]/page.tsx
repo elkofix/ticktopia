@@ -1,7 +1,7 @@
 "use server"
 import { notFound } from 'next/navigation';
 import EditEventCard from '@/features/events/components/EditEventCard';
-import { getEventData } from '@/features/events/events.api';
+import { getEventData, getEventDataManager } from '@/features/events/events.api';
 
 export default async function EditEventPage({
     params,
@@ -12,7 +12,7 @@ export default async function EditEventPage({
         console.log("fasf")
         const { id } = await params;
         console.log(id);
-        const { event } = await getEventData(id);
+        const { event, presentations } = await getEventDataManager(id);
         console.log(event)
         return (
             <div className="min-h-screen bg-gray-50">
