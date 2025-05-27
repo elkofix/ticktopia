@@ -18,7 +18,6 @@ export async function getEvents(params: GetEventsParams = {}): Promise<Event[]> 
   return res.data;
 }
 
-
 export async function getEventData(eventId: String): Promise<{event: Event, presentations: Presentation[]}> {
   const event = await axiosServer.get(`${prefix}/find/${eventId}`);
   const presentations = await axiosServer.get(`presentation/event/${eventId}`);
