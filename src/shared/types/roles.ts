@@ -1,0 +1,1 @@
+type Role = "admin" | "client" | "event-manager" | "ticketChecker"

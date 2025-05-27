@@ -2,17 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '../login.api';
+import { useAuth } from '../hooks/useAuth';
 
 export default function LoginComponent() {
   const [credentials, setCredentials] = useState({
     email: '',
     password: ''
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   
   const router = useRouter();
+  const { login, isLoading, error } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,24 +19,20 @@ export default function LoginComponent() {
       ...prev,
       [name]: value
     }));
-    if (error) setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
 
     try {
-      const response = await login(credentials.email, credentials.password);
+      const userData = await login(credentials.email, credentials.password);
       
-      if (response.user) {
+      if (userData) {
         router.push('/');
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Error al iniciar sesión');
-    } finally {
-      setIsLoading(false);
+    } catch (err) {
+      // Error is already handled by the useAuth hook
+      console.error('Login error:', err);
     }
   };
 

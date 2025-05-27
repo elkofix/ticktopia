@@ -31,7 +31,7 @@ export default async function Page({
                 <div className="container mx-auto px-4 py-8">
                     {/* Primer botón de compra */}
                     <div className="flex justify-center my-12">
-                        <BuyButton />
+                        <BuyButton href={`/buy/${presentation.idPresentation}`}  />
                     </div>
 
                     {/* Grid principal */}
@@ -61,7 +61,7 @@ export default async function Page({
 
                     </div>
                     <div className="flex justify-center my-12">
-                        <BuyButton />
+                        <BuyButton href={`/buy/${presentation.idPresentation}`} />
                     </div>
 
                     <DescriptionSection description={presentation.description} />

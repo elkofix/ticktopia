@@ -1,5 +1,5 @@
-"use client"
-import axiosClient from "@/shared/lib/axiosClient";
+"use server"
+import axiosServer from "@/shared/lib/axiosServer";
 import { Event, GetEventsParams } from "@/shared/types/event";
 import { Presentation } from "@/shared/types/presentation";
 
@@ -8,7 +8,7 @@ const prefix = "/event"
 export async function getEvents(params: GetEventsParams = {}): Promise<Event[]> {
   const { limit = 10, offset = 0 } = params;
 
-  const res = await axiosClient.get(`${prefix}/findAll`, {
+  const res = await axiosServer.get(`${prefix}/findAll`, {
     params: {
       limit: limit.toString(),
       offset: offset.toString(),
@@ -20,8 +20,8 @@ export async function getEvents(params: GetEventsParams = {}): Promise<Event[]> 
 
 
 export async function getEventData(eventId: String): Promise<{event: Event, presentations: Presentation[]}> {
-  const event = await axiosClient.get(`${prefix}/find/${eventId}`);
-  const presentations = await axiosClient.get(`presentation/event/${eventId}`);
+  const event = await axiosServer.get(`${prefix}/find/${eventId}`);
+  const presentations = await axiosServer.get(`presentation/event/${eventId}`);
 
 
   return { event: event.data, presentations: presentations.data };
