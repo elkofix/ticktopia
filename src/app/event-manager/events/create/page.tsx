@@ -11,7 +11,7 @@ interface CreateEventProps {
 }
 
 
-async function uploadImageToCloudinary(base64Image: string): Promise<string> {
+export async function uploadImageToCloudinary(base64Image: string): Promise<string> {
     const response = await fetch('/api/cloudinary', {
         method: 'POST',
         headers: {
