@@ -1,7 +1,7 @@
 'use client'
 
 import { useAuth } from "@/features/auth/hooks/useAuth"
-import { User, LogOut, LogIn, UserPlus, Ticket, Calendar, Shield, Settings, Menu, X, ChevronDown, Camera, CalendarHeart } from "lucide-react"
+import { User, LogOut, LogIn, UserPlus, Ticket, Calendar, Shield, Settings, Menu, X, ChevronDown, Camera, CalendarHeart, Users } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState, useRef, useEffect } from "react"
 import { NavigationItem } from "../types/navigation"
@@ -40,6 +40,14 @@ const NAVIGATION_CONFIG: NavigationItem[] = [
         href: "/event-manager/events",
         icon: CalendarHeart,
         roles: ["event-manager"],
+        priority: 1
+    },
+
+    {
+        label: "Usuarios",
+        href: "/admin/users",
+        icon: Users,
+        roles: ["admin"],
         priority: 1
     },
 ]

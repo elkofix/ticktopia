@@ -4,7 +4,7 @@ export interface User {
   name: string;
   lastname: string;
   isActive: boolean;
-  roles: string[];
+  roles: Role[];
 }
 
 export interface Event {
