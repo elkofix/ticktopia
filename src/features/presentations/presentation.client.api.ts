@@ -40,14 +40,14 @@ export async function createPresentation(presentation: CreatePresentationDto): P
     return res.data;
 }
 
-export async function updatePresentation(presentationId:string, presentation: UpdatePresentationDto): Promise<Presentation[]> {
+export async function updatePresentation(presentationId:string, presentation: UpdatePresentationDto): Promise<Presentation> {
     const res = await axiosClient.put(`${prefix}/${presentationId}`, {...presentation});
     console.log(JSON.stringify(res.data, null, 2));
     return res.data;
 }
 
-export async function deletePresentation(eventId: string): Promise<Presentation[]> {
-    const res = await axiosClient.get(`${prefix}}`);
+export async function deletePresentation(presentationId: string): Promise<Presentation | {error: string}> {
+    const res = await axiosClient.delete(`${prefix}/${presentationId}`);
     console.log(JSON.stringify(res.data, null, 2));
     return res.data;
 }
