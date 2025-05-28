@@ -10,7 +10,7 @@ export default async function HomePage() {
     <main className="">
       {/* Hero Section con carrusel de banners */}
       <EventsHeroSection events={initialEvents} />
-      
+
       {/* Lista de eventos */}
       <div className="mt-8">
         <EventList initialEvents={initialEvents} />

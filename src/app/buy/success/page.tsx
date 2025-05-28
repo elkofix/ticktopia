@@ -4,7 +4,6 @@ import { ProtectedRoute } from '@/features/auth/login/components/ProtectedRoute'
 
 export default function PaymentConfirmationPage() {
   return (
-    <ProtectedRoute requiredRoles={["client"]}>
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
           {/* Icono de check */}
@@ -78,6 +77,5 @@ export default function PaymentConfirmationPage() {
           </p>
         </div>
       </div>
-    </ProtectedRoute>
   )
 }

@@ -21,34 +21,32 @@ export default async function Page({
 
 
         return (
-            <ProtectedRoute requiredRoles={["client"]}>
-                <div className="min-h-screen bg-gray-50">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            {/* Contenido principal */}
-                            <div className="lg:col-span-2">
-                                <TicketSelector
-                                    capacity={presentation.capacity}
-                                    price={presentation.price} presentationId={presentation.idPresentation} />
+            <div className="min-h-screen bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Contenido principal */}
+                        <div className="lg:col-span-2">
+                            <TicketSelector
+                                capacity={presentation.capacity}
+                                price={presentation.price} presentationId={presentation.idPresentation} />
 
-                                <DescriptionSection description={presentation.description} />
+                            <DescriptionSection description={presentation.description} />
 
-                                <PaymentMethods />
-                            </div>
+                            <PaymentMethods />
+                        </div>
 
-                            {/* Sidebar del evento */}
-                            <div className="lg:col-span-1">
-                                <EventSidebar
-                                    event={presentation.event}
-                                    place={presentation.place}
-                                    city={presentation.city}
-                                    startDate={startDate}
-                                />
-                            </div>
+                        {/* Sidebar del evento */}
+                        <div className="lg:col-span-1">
+                            <EventSidebar
+                                event={presentation.event}
+                                place={presentation.place}
+                                city={presentation.city}
+                                startDate={startDate}
+                            />
                         </div>
                     </div>
                 </div>
-            </ProtectedRoute>
+            </div>
         );
     } catch (error) {
         console.log(error);
