@@ -8,6 +8,7 @@ interface DatePickerProps {
   required?: boolean;
   minDate?: Date | string;
   maxDate?: Date | string;
+  id?: string;
 }
 
 export function DatePicker({ 
@@ -16,7 +17,8 @@ export function DatePicker({
   onChange, 
   required = false,
   minDate,
-  maxDate
+  maxDate,
+  id = "date-input"
 }: DatePickerProps) {
   const [showCalendar, setShowCalendar] = useState(false);
 
@@ -73,29 +75,37 @@ export function DatePicker({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
         {label}
       </label>
       
       <div className="relative">
         <input
+          id={id}
           type="datetime-local"
           value={formatDateForInput(value)}
           onChange={(e) => handleDateChange(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           required={required}
           {...getMinMaxAttributes()}
+          data-testid="date-input"
         />
         
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg 
+            className="h-5 w-5 text-gray-400" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            data-testid="calendar-icon"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4m3 0V6a2 2 0 00-2-2H7a2 2 0 00-2 2v1m16 0v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7h16z" />
           </svg>
         </div>
       </div>
       
       {value && (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600" data-testid="selected-date">
           Seleccionado: {formatDateForDisplay(value)}
         </div>
       )}

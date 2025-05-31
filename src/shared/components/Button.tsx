@@ -17,8 +17,6 @@ export const Button = ({
         return 'btn-secondary'
       case 'danger':
         return 'btn-danger'
-      default:
-        return 'btn-primary'
     }
   }
   

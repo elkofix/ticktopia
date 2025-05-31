@@ -86,7 +86,7 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
           placeholder="Buscar ciudad..."
           required
         />
-        
+
         <div className="absolute inset-y-0 right-0 flex items-center pr-3">
           {isLoading ? (
             <svg className="animate-spin h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -103,10 +103,11 @@ export function CitySelector({ selectedCity, onCitySelect }: CitySelectorProps) 
 
       {/* Dropdown */}
       {isOpen && filteredCities.length > 0 && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto" data-testid="dropdown">
           {filteredCities.map((city) => (
             <button
               key={city.id}
+              data-testid="city-item"
               type="button"
               onClick={() => handleCitySelect(city.name)}
               className="w-full px-3 py-2 text-left hover:bg-blue-50 focus:bg-blue-50 focus:outline-none border-b border-gray-100 last:border-b-0"
