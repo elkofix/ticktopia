@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import EventDetailBanner from '@/features/events/components/EventDetailBanner';
 import EventPresentationsList from '@/features/events/components/EventPresentationList';
 import { getPresentationsByEventId } from '@/features/presentations/presentation.api';
+import ErrorHandler from '@/shared/components/ErrorHandler';
 
 
 export default async function Page({
@@ -22,8 +23,9 @@ export default async function Page({
         <EventPresentationsList presentations={presentations} bannerPhotoUrl={presentations[0].event.bannerPhotoUrl} name={presentations[0].event.name} />
       </div>
     );
-  } catch (error) {
-    console.log(error)
-    notFound();
+  } catch (error: any) {
+     return (
+       <ErrorHandler message={error.response.data.message} />
+     );
   }
 }

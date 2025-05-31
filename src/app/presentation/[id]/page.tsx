@@ -9,6 +9,7 @@ import { PaymentMethods } from '@/features/presentations/components/PaymentMetho
 import { PriceCard } from '@/features/presentations/components/PriceCard';
 import { DescriptionSection } from '@/features/presentations/components/DescriptionSection';
 import { EventInfoCard } from '@/features/events/components/EventInfoCard';
+import ErrorHandler from '@/shared/components/ErrorHandler';
 
 export default async function Page({
     params,
@@ -31,7 +32,7 @@ export default async function Page({
                 <div className="container mx-auto px-4 py-8">
                     {/* Primer botón de compra */}
                     <div className="flex justify-center my-12">
-                        <BuyButton href={`/buy/${presentation.idPresentation}`}  />
+                        <BuyButton href={`/buy/${presentation.idPresentation}`} />
                     </div>
 
                     {/* Grid principal */}
@@ -73,8 +74,9 @@ export default async function Page({
                 </div>
             </div>
         );
-    } catch (error) {
-        console.log(error)
-        notFound();
+    } catch (error: any) {
+        return (
+            <ErrorHandler message={error.response.data.message} />
+        );
     }
 }

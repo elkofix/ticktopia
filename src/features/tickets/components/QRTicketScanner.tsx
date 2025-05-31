@@ -178,11 +178,11 @@ export default function QRTicketScanner() {
             setError(null);
         } catch (err: any) {
             console.error('Ticket redemption error:', err);
-            setError(err.message || 'Error al canjear el ticket');
+            setError(err.response.data.message || 'Error al canjear el ticket');
             setResult({
                 success: false,
                 ticketId: qrData,
-                message: err.message || 'Error desconocido'
+                message: err.response.data.message || 'Error desconocido'
             });
         } finally {
             setIsLoading(false);

@@ -4,6 +4,7 @@ import EditEventCard from '@/features/events/components/EditEventCard';
 import { getEventData } from '@/features/events/events.api';
 import Link from 'next/link';
 import { PresentationManagerCard } from '@/features/presentations/components/PresentationManagerCard';
+import ErrorHandler from '@/shared/components/ErrorHandler';
 
 export default async function EditEventPage({
     params,
@@ -13,7 +14,7 @@ export default async function EditEventPage({
     try {
         const { id } = await params;
         const { event, presentations } = await getEventData(id);
-        
+
         return (
             <div className="min-h-screen bg-gray-50">
                 <div className="container mx-auto px-4 py-8">
@@ -26,7 +27,7 @@ export default async function EditEventPage({
                                 Modifica la información de tu evento o elimínalo si ya no lo necesitas.
                             </p>
                         </div>
-                        
+
                         <div className="max-w-2xl mx-auto mb-8">
                             <EditEventCard event={event} />
                         </div>
@@ -37,7 +38,7 @@ export default async function EditEventPage({
                                 <h2 className="text-2xl font-bold text-gray-900">
                                     Presentaciones
                                 </h2>
-                                <Link 
+                                <Link
                                     href={`/event-manager/presentation/manage/${id}`}
                                     className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                                 >
@@ -51,7 +52,7 @@ export default async function EditEventPage({
                             {presentations && presentations.length > 0 ? (
                                 <div className="space-y-4">
                                     {presentations.map((presentation) => (
-                                        <PresentationManagerCard 
+                                        <PresentationManagerCard
                                             key={presentation.idPresentation}
                                             presentation={presentation}
                                             bannerPhotoUrl={event.bannerPhotoUrl || '/placeholder-presentation.jpg'}
@@ -70,7 +71,7 @@ export default async function EditEventPage({
                                     <p className="text-gray-500 mb-6">
                                         Crea tu primera presentación para este evento
                                     </p>
-                                    <Link 
+                                    <Link
                                         href={`/event-manager/presentation/manage/${id}`}
                                         className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                                     >
@@ -86,8 +87,9 @@ export default async function EditEventPage({
                 </div>
             </div>
         );
-    } catch (error) {
-        console.log(error);
-        notFound();
+    } catch (error: any) {
+        return (
+            <ErrorHandler message={error.response.data.message} />
+        );
     }
 }

@@ -6,7 +6,7 @@ import EventSidebar from '@/features/buy/components/EventSidebar';
 import { DescriptionSection } from '@/features/presentations/components/DescriptionSection';
 import { PaymentMethods } from '@/features/presentations/components/PaymentMethod';
 import TicketSelector from '@/features/buy/components/TicketSelector';
-import { ProtectedRoute } from '@/features/auth/login/components/ProtectedRoute';
+import ErrorHandler from '@/shared/components/ErrorHandler';
 
 export default async function Page({
     params,
@@ -48,8 +48,8 @@ export default async function Page({
                 </div>
             </div>
         );
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-        notFound();
+        <ErrorHandler message={error.response.data.message ?? "Error obteniendo la presentación"} />
     }
 }

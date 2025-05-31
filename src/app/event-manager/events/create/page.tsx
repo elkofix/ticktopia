@@ -102,8 +102,8 @@ export default function CreateEventCard() {
             });
             setPreviewImage('');
 
-        } catch (error) {
-            console.error('Error creating event:', error);
+        } catch (error: any) {
+            console.error('Error creating event:', error.response.data.message || "No se pudo crear el evento");
         } finally {
             setIsCreating(false);
         }

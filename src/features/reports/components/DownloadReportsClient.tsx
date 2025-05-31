@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 interface DownloadReportsClientProps {
   type: 'sales' | 'occupation';
-  generateReport: () => Promise<{ data: string; mimeType: string }>; // Cambiar la interfaz
+  generateReport: () => Promise<{ data: string; mimeType: string } | { error: string }>; // Cambiar la interfaz
   buttonText: string;
   buttonColor: string;
 }
@@ -26,15 +26,20 @@ export function DownloadReportsClient({
       // Generar el reporte (ahora devuelve base64)
       const reportData = await generateReport();
 
+      if ('error' in reportData) {
+        throw new Error(reportData.error);
+      }
+
       // Convertir base64 a bytes
       const base64Data = reportData.data;
+
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
-      
+
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-      
+
       const byteArray = new Uint8Array(byteNumbers);
 
       // Crear un Blob con el contenido del PDF
@@ -46,7 +51,7 @@ export function DownloadReportsClient({
       // Crear un elemento <a> temporal para descargar
       const link = document.createElement('a');
       link.href = url;
-      
+
       // Generar nombre del archivo con timestamp
       const timestamp = new Date().toISOString().split('T')[0];
       const filename = `reporte-${type}-${timestamp}-${Date.now()}.pdf`;
@@ -61,7 +66,7 @@ export function DownloadReportsClient({
       window.URL.revokeObjectURL(url);
 
       setDownloadStatus('success');
-      
+
       // Resetear el estado después de 3 segundos
       setTimeout(() => {
         setDownloadStatus('idle');
@@ -70,7 +75,7 @@ export function DownloadReportsClient({
     } catch (error) {
       console.error('Error al descargar el reporte:', error);
       setDownloadStatus('error');
-      
+
       // Resetear el estado de error después de 5 segundos
       setTimeout(() => {
         setDownloadStatus('idle');

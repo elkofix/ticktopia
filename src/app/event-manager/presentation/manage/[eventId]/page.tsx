@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getEventDataManager } from '@/features/events/events.api';
 import { getPresentationById } from '@/features/presentations/presentation.api';
 import { PresentationForm } from '@/features/presentations/components/PresentationForm';
+import ErrorHandler from '@/shared/components/ErrorHandler';
 
 export default async function PresentationManagePage({
     params,
@@ -14,9 +15,9 @@ export default async function PresentationManagePage({
     try {
         const { eventId } = await params;
         const { editId } = await searchParams;
-        
+
         const { event } = await getEventDataManager(eventId);
-        
+
         let presentationToEdit = null;
         if (editId) {
             try {
@@ -35,14 +36,14 @@ export default async function PresentationManagePage({
                                 {editId ? 'Editar Presentación' : 'Crear Nueva Presentación'}
                             </h1>
                             <p className="text-gray-600">
-                                {editId 
+                                {editId
                                     ? 'Modifica los detalles de tu presentación'
                                     : `Crea una nueva presentación para "${event.name}"`
                                 }
                             </p>
                         </div>
-                        
-                        <PresentationForm 
+
+                        <PresentationForm
                             eventId={eventId}
                             eventName={event.name}
                             initialData={presentationToEdit}
@@ -51,8 +52,9 @@ export default async function PresentationManagePage({
                 </div>
             </div>
         );
-    } catch (error) {
-        console.log(error);
-        notFound();
+    } catch (error: any) {
+        return (
+            <ErrorHandler message={error.response.data.message} />
+        );
     }
 }

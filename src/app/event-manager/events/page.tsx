@@ -18,7 +18,7 @@ export default function Page() {
                 const data = await getEventsByUser();
                 setEvents(data);
 
-            } catch (err) {
+            } catch (err: any) {
                 console.error(err);
                 setError(true);
             }
@@ -28,7 +28,7 @@ export default function Page() {
     }, []);
 
     if (error) {
-        notFound();
+        setEvents(null);
         return null;
     }
 
