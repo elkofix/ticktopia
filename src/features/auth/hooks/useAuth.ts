@@ -24,11 +24,16 @@ export const useAuth = () => {
       if (!response) {
         throw new Error('Error en el login');
       }
+      if ('user' in response) {
+        const userData: AuthUser = response.user;
+        dispatch(loginSuccess(userData));
+        return userData;
 
-      const userData: AuthUser = response.user;
-      dispatch(loginSuccess(userData));
-
-      return userData;
+      } else {
+        const errorMessage = response.error || 'Error desconocido';
+        console.error('Error en el login:', errorMessage);
+        dispatch(loginFailure("Inicio de sesión fallido, revisa tus credenciales"));
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
       dispatch(loginFailure(errorMessage));

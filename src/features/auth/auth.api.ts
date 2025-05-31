@@ -5,7 +5,7 @@ import { AuthUser } from "@/shared/types/user";
 const prefix = "/auth"
 
 
-export async function login(email: string, password: string): Promise<{ user: AuthUser }> {
+export async function login(email: string, password: string): Promise<{ user: AuthUser } | { error: string }> {
   try {
 
 
@@ -16,9 +16,9 @@ export async function login(email: string, password: string): Promise<{ user: Au
 
     console.log("el usuario", res.data);
     return res.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error during login:", error);
-    throw new Error("Login fallido. Por favor, verifica tus credenciales.");
+    return { error: error.response?.data?.message || "Error al iniciar sesión" };
   }
 }
 
