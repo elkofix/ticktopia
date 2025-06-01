@@ -1,4 +1,3 @@
-import { notFound } from 'next/navigation';
 import EventDetailBanner from '@/features/events/components/EventDetailBanner';
 import EventPresentationsList from '@/features/events/components/EventPresentationList';
 import { getPresentationsByEventId } from '@/features/presentations/presentation.api';

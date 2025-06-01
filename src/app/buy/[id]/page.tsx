@@ -10,7 +10,7 @@ import ErrorHandler from '@/shared/components/ErrorHandler';
 export default async function Page({
     params,
 }: {
-    params: Promise<{ id: string }>
+    params: Promise<{ id: string } | { id: string }>
 }) {
     try {
         const { id } = await params;
