@@ -21,7 +21,7 @@ export default function UsersPage() {
                     setUsers(data);
                 } else {
                     const errorData = (data as any)?.error;
-                    const message = 
+                    const message = errorData
                         errorData?.response?.data?.message ||
                         errorData?.message ||
                         "Error al cargar los usuarios";

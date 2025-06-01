@@ -1,5 +1,4 @@
-// axiosServer.test.js
-import axiosServer from './axiosServer'; // Ajusta la ruta según tu estructura
+
 import axios from 'axios';
 import { env } from 'process';
 
