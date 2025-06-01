@@ -25,9 +25,3 @@ export async function getEventData(eventId: String): Promise<{ event: Event, pre
   return { event: event.data, presentations: presentations.data };
 }
 
-export async function getEventDataManager(eventId: String): Promise<{ event: Event, presentations: Presentation[] }> {
-  const event = await axiosServer.get(`${prefix}/find/manager/${eventId}`);
-  const presentations = await axiosServer.get(`presentation/event/${eventId}`);
-
-  return { event: event.data, presentations: presentations.data };
-}

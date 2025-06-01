@@ -25,7 +25,7 @@ export default async function Page({
     );
   } catch (error: any) {
      return (
-       <ErrorHandler message={error.response.data.message} />
+       <ErrorHandler message={error?.response?.data?.message} />
      );
   }
 }

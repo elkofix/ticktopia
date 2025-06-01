@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import { ProtectedRoute } from '@/features/auth/login/components/ProtectedRoute'
 
 export default function PaymentConfirmationPage() {
   return (

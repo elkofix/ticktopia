@@ -7,7 +7,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 const persistConfig = {
   key: 'auth',
   storage,
-  whitelist: ['user', 'isAuthenticated'],
+  whitelist: ['user', 'isAuthenticated', 'loginTime'], // Solo persistimos el usuario, autenticación y tiempo de inicio de sesión
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);

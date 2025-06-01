@@ -34,7 +34,7 @@ export async function register(email: string, password: string, name: string, la
     console.log("el usuario", res.data);
     return res.data;
   } catch (error: any) {
-    return { error: error.response.data.message || "Error al registrar el usuario" };
+    return { error: error?.response?.data?.message || "Error al registrar el usuario" };
   }
 
 }

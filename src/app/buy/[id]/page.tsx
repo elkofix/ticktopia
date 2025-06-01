@@ -1,5 +1,4 @@
 "use server"
-import { notFound } from 'next/navigation';
 import { getPresentationById } from '@/features/presentations/presentation.api';
 import { formateDate } from '@/shared/utils/dates';
 import EventSidebar from '@/features/buy/components/EventSidebar';
@@ -50,6 +49,6 @@ export default async function Page({
         );
     } catch (error: any) {
         console.log(error);
-        <ErrorHandler message={error.response.data.message ?? "Error obteniendo la presentación"} />
+        <ErrorHandler message={error?.response?.data?.message ?? "Error obteniendo la presentación"} />
     }
 }

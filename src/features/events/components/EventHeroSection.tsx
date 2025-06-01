@@ -20,8 +20,6 @@ export default function EventsHeroSection({ events }:{events: Event[]}) {
     return () => clearInterval(interval);
   }, [events.length]);
 
-
-
   const handleEventClick = (eventId: string) => {
     router.push(`/event/${eventId}`);
   };
@@ -33,36 +31,49 @@ export default function EventsHeroSection({ events }:{events: Event[]}) {
   const currentEvent = events[currentIndex];
 
   return (
-    <section className="relative w-full h-96 mb-8 overflow-hidden shadow-lg">
+    <section 
+      className="relative w-full h-96 mb-8 overflow-hidden shadow-lg"
+      data-testid="hero-section"
+    >
       {/* Banner de fondo */}
       <div 
         className="absolute inset-0 bg-cover bg-center transition-all duration-500 ease-in-out"
         style={{ 
           backgroundImage: `url(${currentEvent.bannerPhotoUrl})`,
         }}
+        data-testid="event-banner"
       >
         {/* Overlay oscuro para mejor legibilidad */}
-        <div className="absolute inset-0 bg-black bg-opacity-40" />
+        <div 
+          className="absolute inset-0 bg-black bg-opacity-40"
+          data-testid="banner-overlay" 
+        />
       </div>
 
       {/* Contenido del hero */}
       <div className="relative z-10 flex flex-col justify-end h-full p-8 text-white">
         <div className="max-w-2xl">
-          <h1 className="text-4xl font-bold mb-4 drop-shadow-lg">
+          <h1 
+            className="text-4xl font-bold mb-4 drop-shadow-lg"
+            data-testid="event-title"
+          >
             {currentEvent.name}
           </h1>
-          <p className="text-lg mb-4 drop-shadow">
+          <p 
+            className="text-lg mb-4 drop-shadow"
+            data-testid="event-organizer"
+          >
             Organizado por {currentEvent.user.name || 'Usuario'}
           </p>
           <button
             onClick={() => handleEventClick(currentEvent.id)}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 transform hover:scale-105"
+            data-testid="view-event-button"
           >
             Ver Evento
           </button>
         </div>
       </div>
-
     </section>
   );
 }

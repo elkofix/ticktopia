@@ -3,29 +3,12 @@ import React, { useState, useRef } from 'react'
 import Image from 'next/image'
 import { createEvent } from '@/features/events/events.client.api';
 import { useRouter } from 'next/navigation';
+import { uploadImageToCloudinary } from '@/shared/utils/image';
 
 interface CreateEventProps {
     name: string;
     bannerPhotoUrl: string;
     isPublic: boolean;
-}
-
-
-export async function uploadImageToCloudinary(base64Image: string): Promise<string> {
-    const response = await fetch('/api/cloudinary', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ image: base64Image }),
-    });
-
-    if (!response.ok) {
-        throw new Error('Failed to upload image');
-    }
-
-    const data = await response.json();
-    return data.url;
 }
 
 export default function CreateEventCard() {
@@ -103,7 +86,7 @@ export default function CreateEventCard() {
             setPreviewImage('');
 
         } catch (error: any) {
-            console.error('Error creating event:', error.response.data.message || "No se pudo crear el evento");
+            console.error('Error creating event:', error?.response?.data?.message || "No se pudo crear el evento");
         } finally {
             setIsCreating(false);
         }

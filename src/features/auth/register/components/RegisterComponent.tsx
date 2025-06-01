@@ -43,7 +43,6 @@ export default function RegisterComponent() {
       );
 
       if (!('error' in registerData)) {
-        // Después del registro exitoso, hacer login usando useAuth
         const userData = await login(credentials.email, credentials.password);
 
         if (userData) {

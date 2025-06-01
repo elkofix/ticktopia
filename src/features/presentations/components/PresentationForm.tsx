@@ -73,7 +73,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
   // Función para obtener solo los campos que han cambiado
   const getChangedFields = (): UpdatePresentationDto => {
     const changes: UpdatePresentationDto = {};
-    
+
     Object.keys(formData).forEach(key => {
       const typedKey = key as keyof typeof formData;
       if (formData[typedKey] !== initialFormData[typedKey]) {
@@ -81,7 +81,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
         changes[typedKey] = formData[typedKey];
       }
     });
-    
+
     return changes;
   };
 
@@ -92,7 +92,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
     try {
       if (isEditMode && initialData?.idPresentation) {
         const changedFields = getChangedFields();
-        
+
         // Solo enviar la actualización si hay cambios
         if (Object.keys(changedFields).length > 0) {
           await updatePresentation(initialData.idPresentation, changedFields);
@@ -100,7 +100,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
         } else {
           console.log('No changes detected');
         }
-        
+
         router.push(`/event-manager/events/manage/${eventId}`);
       } else {
         const presentationData = {
@@ -147,6 +147,7 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
   };
 
   const isFormValid =
+    formData.description &&
     formData.place &&
     formData.city &&
     formData.startDate &&
@@ -164,11 +165,16 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Lugar */}
+// In your PresentationForm component, update the place input field:
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="place-input"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Lugar de la presentación *
             </label>
             <input
+              id="place-input"
               type="text"
               value={formData.place}
               onChange={(e) => handleInputChange('place', e.target.value)}

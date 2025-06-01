@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PaymentMethods matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="bg-white p-8 rounded-2xl shadow-lg mb-12 border border-gray-100"
+    data-testid="payment-methods-container"
+  >
+    <div
+      class="flex items-center mb-6"
+    >
+      <svg
+        data-testid="credit-card-icon"
+      />
+      <h2
+        class="text-3xl font-bold text-gray-900"
+      >
+        Métodos de Pago
+      </h2>
+    </div>
+    <div
+      class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8"
+      data-testid="security-notice"
+    >
+      <div
+        class="flex items-center"
+      >
+        <svg
+          data-testid="shield-icon"
+        />
+        <p
+          class="text-blue-800 font-medium"
+        >
+          Aceptamos únicamente tarjetas de crédito para garantizar la seguridad de tu compra
+        </p>
+      </div>
+    </div>
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+    >
+      <div
+        class="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+        data-testid="credit-card"
+      >
+        <div
+          class="bg-white p-4"
+        >
+          <div
+            class="flex items-center justify-between"
+          >
+            <span
+              class="font-semibold text-gray-900"
+            >
+              Visa
+            </span>
+            <svg
+              data-testid="check-circle-icon"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+        data-testid="credit-card"
+      >
+        <div
+          class="bg-white p-4"
+        >
+          <div
+            class="flex items-center justify-between"
+          >
+            <span
+              class="font-semibold text-gray-900"
+            >
+              Mastercard
+            </span>
+            <svg
+              data-testid="check-circle-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

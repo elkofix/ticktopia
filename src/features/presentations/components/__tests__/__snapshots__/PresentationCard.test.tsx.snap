@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PresentationCard matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="group flex flex-col md:flex-row bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition-all duration-200 hover:bg-gray-100"
+    data-testid="presentation-card"
+  >
+    <div
+      class="relative w-full h-40 md:w-48 md:h-32 lg:w-56 lg:h-36 flex-shrink-0"
+      data-testid="image-container"
+    >
+      <img
+        alt="Test Presentation"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        data-testid="presentation-image"
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 200px, 250px"
+        src="/banner.jpg"
+        style="position: absolute; height: 100%; width: 100%; object-fit: cover;"
+      />
+    </div>
+    <div
+      class="flex-1 p-4 md:p-6 flex flex-col lg:flex-row justify-between gap-4"
+    >
+      <div
+        class="flex-1 min-w-0"
+      >
+        <h3
+          class="text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 group-hover:text-brand transition-colors line-clamp-1"
+        >
+          Test Presentation
+        </h3>
+        <div
+          class="space-y-2"
+        >
+          <p
+            class="text-sm text-gray-500 mt-2 line-clamp-2"
+            data-testid="presentation-description"
+          >
+            This is a test presentation description that might be long.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

@@ -33,6 +33,12 @@ interface UpdatePresentationDto{
     city?: string;
 }
 
+export async function getPresentationForManagerById(presentationId: string): Promise<Presentation> {
+  const res = await axiosClient.get(`${prefix}/manager/${presentationId}`);
+  return res.data;
+}
+
+
 export async function createPresentation(presentation: CreatePresentationDto): Promise<Presentation> {
     console.log("press",presentation)
     const res = await axiosClient.post(`${prefix}`, {...presentation});

@@ -55,7 +55,10 @@ export function PresentationManagerCard({
 
   return (
     <>
-      <div className="group flex flex-col md:flex-row bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200">
+      <div
+        className="group flex flex-col md:flex-row bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200"
+        data-testid="presentation-card"
+      >
         {/* Presentation Banner */}
         <div className="relative w-full h-40 md:w-48 md:h-32 lg:w-56 lg:h-36 flex-shrink-0">
           <Image
@@ -71,6 +74,8 @@ export function PresentationManagerCard({
 
           {/* Delete Button - Top Right Corner */}
           <button
+            data-testid="delete-button"
+
             onClick={handleDeleteClick}
             className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-200 shadow-lg"
             title="Eliminar presentación"
@@ -186,7 +191,7 @@ export function PresentationManagerCard({
                     </DialogTitle>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        ¿Estás seguro de que deseas eliminar la presentación "{eventName}"?
+                        ¿Estás seguro de que deseas eliminar la presentación &quot;{eventName}&quot;?
                         Esta acción no se puede deshacer.
                       </p>
                     </div>
@@ -203,6 +208,8 @@ export function PresentationManagerCard({
                     </button>
                     <button
                       type="button"
+                      data-testid="confirm-delete-button"
+
                       className="flex-1 inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={handleConfirmDelete}
                       disabled={isDeleting}
@@ -256,7 +263,7 @@ export function PresentationManagerCard({
                     </DialogTitle>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        La presentación "{eventName}" ha sido eliminada exitosamente.
+                        La presentación &quot;{eventName}&quot; ha sido eliminada exitosamente.
                       </p>
                     </div>
                   </div>

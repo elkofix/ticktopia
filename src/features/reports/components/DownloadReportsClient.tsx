@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-interface DownloadReportsClientProps {
+export interface DownloadReportsClientProps {
   type: 'sales' | 'occupation';
   generateReport: () => Promise<{ data: string; mimeType: string } | { error: string }>; // Cambiar la interfaz
   buttonText: string;

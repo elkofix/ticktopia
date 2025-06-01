@@ -20,7 +20,7 @@ export function EventListPagination({
   onPageChange,
 }: EventListPaginationProps) {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4"data-testid="pagination-container">
       {/* Load More Button */}
       <div className="flex-1">
         {hasMoreData && (
@@ -37,6 +37,7 @@ export function EventListPagination({
       {/* Page Numbers */}
       <div className="flex items-center space-x-2">
         <button
+  aria-label="Previous page"
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
           className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -66,6 +67,7 @@ export function EventListPagination({
         </div>
 
         <button
+  aria-label="Next page"
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
           className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"

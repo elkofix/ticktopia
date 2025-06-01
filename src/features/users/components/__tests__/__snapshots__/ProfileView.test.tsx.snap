@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileView matches snapshot with default props 1`] = `
+<DocumentFragment>
+  <div
+    class="space-y-6"
+    data-testid="profile-view"
+  >
+    <div
+      data-testid="profile-field-nombre"
+    >
+      Nombre: John
+    </div>
+    <div
+      data-testid="profile-field-apellido"
+    >
+      Apellido: Doe
+    </div>
+    <div
+      data-testid="profile-field-email"
+    >
+      Email: john.doe@example.com
+    </div>
+    <div
+      class="flex space-x-4 pt-4"
+      data-testid="profile-actions"
+    >
+      <button
+        data-testid="button-primary"
+      >
+        Editar Perfil
+      </button>
+      <button
+        data-testid="button-danger"
+      >
+        Cerrar Cuenta
+      </button>
+    </div>
+  </div>
+</DocumentFragment>
+`;

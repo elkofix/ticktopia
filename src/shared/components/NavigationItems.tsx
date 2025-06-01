@@ -1,5 +1,4 @@
 import { NavigationItem } from "../types/navigation";
-
 export const NavigationItems = ({
     items,
     onNavigate,
@@ -9,7 +8,7 @@ export const NavigationItems = ({
     onNavigate: (href: string) => void;
     className?: string;
 }) => (
-    <div className={`space-y-1 ${className}`}>
+    <div data-testid="navigation-items-container" className={`space-y-1 ${className}`}>
         {items.map((item, index) => {
             const Icon = item.icon
             return (

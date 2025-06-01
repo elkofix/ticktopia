@@ -163,7 +163,7 @@ export default function QRTicketScanner() {
         stopScanning();
 
         try {
-            console.log("LA DATA",qrData);
+            console.log("LA DATA", qrData);
             const ticketId = qrData.trim();
             if (!ticketId) throw new Error('QR inválido: no contiene ID de ticket');
 
@@ -178,11 +178,11 @@ export default function QRTicketScanner() {
             setError(null);
         } catch (err: any) {
             console.error('Ticket redemption error:', err);
-            setError(err.response.data.message || 'Error al canjear el ticket');
+            setError(err?.response?.data?.message || 'Error al canjear el ticket');
             setResult({
                 success: false,
                 ticketId: qrData,
-                message: err.response.data.message || 'Error desconocido'
+                message: err?.response?.data?.message || 'Error desconocido'
             });
         } finally {
             setIsLoading(false);
@@ -220,6 +220,7 @@ export default function QRTicketScanner() {
                 {isScanning ? (
                     <div className="relative">
                         <video
+                            data-testid="scanner-video"
                             ref={videoRef}
                             autoPlay
                             playsInline

@@ -1,4 +1,3 @@
-
 import { act, renderHook } from '@testing-library/react';
 import { login as loginApi } from '../auth.api';
 import { AuthUser } from '@/shared/types/user';
@@ -16,11 +15,18 @@ const mockUseSelector = jest.fn();
 
 beforeEach(() => {
   jest.clearAllMocks();
+  jest.useFakeTimers();
   require('react-redux').useDispatch.mockReturnValue(mockDispatch);
   require('react-redux').useSelector.mockImplementation(mockUseSelector);
 });
 
-describe('useAuth', () => {
+afterEach(() => {
+  jest.useRealTimers();
+});
+
+
+
+describe('useAuth - additional tests', () => {
   const mockUser: AuthUser = {
     id: '123',
     name: 'John',
@@ -30,107 +36,166 @@ describe('useAuth', () => {
     roles: ['admin'],
   };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    require('react-redux').useDispatch.mockReturnValue(mockDispatch);
+    require('react-redux').useSelector.mockImplementation(mockUseSelector);
+  });
 
-  describe('logout', () => {
-    it('should dispatch logout and clear cookie', async () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  describe('login - edge cases', () => {
+    it('should handle API response without user data', async () => {
+      (loginApi as jest.Mock).mockResolvedValue({ error: 'Invalid credentials' });
       mockUseSelector.mockReturnValue({
-        user: mockUser,
-        isAuthenticated: true,
+        user: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
       });
 
-      // Mock de document.cookie
-      Object.defineProperty(document, 'cookie', {
-        writable: true,
-        value: 'token=abc123',
-      });
-
       const { result } = renderHook(() => useAuth());
 
-      act(() => {
-        result.current.logout();
+      await act(async () => {
+        await result.current.login('john.doe@example.com', 'wrong');
       });
 
       expect(mockDispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: 'auth/logout',
+          type: 'auth/loginFailure',
+          payload: "Inicio de sesión fallido, revisa tus credenciales",
         })
       );
-      expect(document.cookie).toContain('token=; expires=Thu, 01 Jan 1970 00:00:00 UTC');
     });
-  });
 
-  describe('role checks', () => {
-    beforeEach(() => {
+    it('should handle empty API response', async () => {
+      (loginApi as jest.Mock).mockResolvedValue({});
       mockUseSelector.mockReturnValue({
-        user: mockUser,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      });
-    });
-
-    it('should return true for hasRole when user has the role', () => {
-      const { result } = renderHook(() => useAuth());
-      expect(result.current.hasRole('admin')).toBe(true);
-    });
-
-    it('should return false for hasRole when user does not have the role', () => {
-      const { result } = renderHook(() => useAuth());
-      expect(result.current.hasRole('client')).toBe(false);
-    });
-
-    it('should return true for hasAnyRole when user has at least one role', () => {
-      const { result } = renderHook(() => useAuth());
-      expect(result.current.hasAnyRole(['admin', 'client'])).toBe(true);
-    });
-
-    it('should return false for hasAnyRole when user has none of the roles', () => {
-      const { result } = renderHook(() => useAuth());
-      expect(result.current.hasAnyRole(['client', 'event-manager'])).toBe(false);
-    });
-
-    it('should return true for hasAllRoles when user has all roles', () => {
-      mockUseSelector.mockReturnValue({
-        user: { ...mockUser, roles: ['admin', 'event-manager'] },
-        isAuthenticated: true,
+        user: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
       });
 
       const { result } = renderHook(() => useAuth());
-      expect(result.current.hasAllRoles(['admin', 'event-manager'])).toBe(true);
-    });
 
-    it('should return false for hasAllRoles when user is missing any role', () => {
-      const { result } = renderHook(() => useAuth());
-      expect(result.current.hasAllRoles(['admin', 'client'])).toBe(false);
-    });
-  });
-
-  describe('updateUserProfile', () => {
-    it('should dispatch updateUser with new user data', () => {
-      mockUseSelector.mockReturnValue({
-        user: mockUser,
-        isAuthenticated: true,
-        isLoading: false,
-        error: null,
-      });
-
-      const { result } = renderHook(() => useAuth());
-      const updatedUser = { ...mockUser, name: 'Jane' };
-
-      act(() => {
-        result.current.updateUserProfile(updatedUser);
+      await act(async () => {
+        await result.current.login('john.doe@example.com', 'password');
       });
 
       expect(mockDispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: 'auth/updateUser',
-          payload: updatedUser,
+          type: 'auth/loginFailure',
+          payload: "Inicio de sesión fallido, revisa tus credenciales",
         })
       );
+    });
+  });
+
+  describe('session management - additional cases', () => {
+
+    it('should return true for checkSessionExpiration when session is about to expire', () => {
+      const loginTime = Date.now() - (55 * 60 * 1000); // 55 minutes ago
+      mockUseSelector.mockReturnValue({
+        user: mockUser,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+        loginTime,
+      });
+
+      const { result } = renderHook(() => useAuth());
+      expect(result.current.checkSessionExpiration()).toBe(true);
+    });
+    
+    describe('role checks - edge cases', () => {
+      it('should handle undefined roles in hasRole', () => {
+        mockUseSelector.mockReturnValue({
+          user: { ...mockUser, roles: undefined },
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+
+        const { result } = renderHook(() => useAuth());
+        expect(result.current.hasRole('admin')).toBe(false);
+      });
+
+      it('should handle empty roles array in hasAnyRole', () => {
+        mockUseSelector.mockReturnValue({
+          user: { ...mockUser, roles: [] },
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+
+        const { result } = renderHook(() => useAuth());
+        expect(result.current.hasAnyRole(['admin'])).toBe(false);
+      });
+
+      it('should handle empty roles array in hasAllRoles', () => {
+        mockUseSelector.mockReturnValue({
+          user: { ...mockUser, roles: [] },
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+
+        const { result } = renderHook(() => useAuth());
+        expect(result.current.hasAllRoles(['admin'])).toBe(false);
+      });
+    });
+
+    describe('cookie management', () => {
+      it('should properly clear cookie on logout with all attributes', () => {
+        mockUseSelector.mockReturnValue({
+          user: mockUser,
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
+
+        // Mock document.cookie
+        Object.defineProperty(document, 'cookie', {
+          writable: true,
+          value: 'token=abc123; Path=/; Secure; SameSite=Strict',
+        });
+
+        const { result } = renderHook(() => useAuth());
+        act(() => {
+          result.current.logout();
+        });
+
+        expect(document.cookie).toContain('token=; expires=Thu, 01 Jan 1970 00:00:00 UTC');
+      });
+    });
+
+    describe('error handling', () => {
+      it('should handle non-Error exceptions in login', async () => {
+        (loginApi as jest.Mock).mockRejectedValue('Some string error');
+        mockUseSelector.mockReturnValue({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          error: null,
+        });
+
+        const { result } = renderHook(() => useAuth());
+
+        await act(async () => {
+          await expect(result.current.login('john.doe@example.com', 'password')).rejects.toEqual('Some string error');
+        });
+
+        expect(mockDispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: 'auth/loginFailure',
+            payload: 'Error desconocido',
+          })
+        );
+      });
     });
   });
 });

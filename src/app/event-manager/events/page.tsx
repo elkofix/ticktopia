@@ -28,7 +28,6 @@ export default function Page() {
     }, []);
 
     if (error) {
-        setEvents(null);
         return null;
     }
 

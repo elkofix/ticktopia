@@ -21,7 +21,7 @@ export const ProtectedRoute = ({ children, requiredRoles }: ProtectedRouteProps)
         router.replace('/unauthorized');
       }
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading, router, requiredRoles, hasAllRoles]);
 
   if (isLoading || !isAuthenticated) {
     return <div>Cargando...</div>; // o un spinner

@@ -1,14 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Link from 'next/link';
 import { Logo } from '../Logo';
 
 // Mock de next/link para simplificar las pruebas
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => (
+  const Link = ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   );
+  Link.displayName = 'Link';
+  return Link;
 });
 
 describe('Logo Component', () => {

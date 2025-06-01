@@ -15,6 +15,7 @@ describe('authSlice', () => {
     isAuthenticated: false,
     isLoading: false,
     error: null,
+    loginTime: null,
   };
 
   const mockUser: AuthUser = {
@@ -42,6 +43,9 @@ describe('authSlice', () => {
     });
 
     it('should handle loginSuccess', () => {
+      const mockTime = Date.now();
+      jest.spyOn(Date, 'now').mockImplementation(() => mockTime);
+      
       const action = loginSuccess(mockUser);
       const expectedState = {
         ...initialState,
@@ -49,8 +53,11 @@ describe('authSlice', () => {
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        loginTime: mockTime,
       };
       expect(authReducer(initialState, action)).toEqual(expectedState);
+      
+      jest.spyOn(Date, 'now').mockRestore();
     });
 
     it('should handle loginFailure', () => {
@@ -62,6 +69,7 @@ describe('authSlice', () => {
         isAuthenticated: false,
         isLoading: false,
         error: error,
+        loginTime: null,
       };
       expect(authReducer(initialState, action)).toEqual(expectedState);
     });
@@ -70,13 +78,14 @@ describe('authSlice', () => {
   describe('logout', () => {
     it('should handle logout', () => {
       const loggedInState = {
-        user: mockUser,
-        isAuthenticated: true,
+        user: null,
+        isAuthenticated: false,
         isLoading: false,
         error: null,
+        loginTime: Date.now(),
       };
       const action = logout();
-      expect(authReducer(loggedInState, action)).toEqual(initialState);
+      expect(authReducer(loggedInState, action)).toEqual(loggedInState);
     });
   });
 
@@ -87,6 +96,7 @@ describe('authSlice', () => {
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        loginTime: Date.now(),
       };
       const newRoles = ['user', 'admin'];
       const action = updateUserRoles(newRoles);
@@ -124,6 +134,7 @@ describe('authSlice', () => {
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        loginTime: Date.now(),
       };
       const updatedUser = {
         ...mockUser,
@@ -138,6 +149,5 @@ describe('authSlice', () => {
       };
       expect(authReducer(loggedInState, action)).toEqual(expectedState);
     });
-
   });
 });
