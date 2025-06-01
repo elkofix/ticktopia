@@ -1,5 +1,5 @@
 "use client"
-import { EmptyPresentationsState } from '@/features/presentations/components/EmptyPresentationState';
+import EmptyPresentationsState from '@/features/presentations/components/EmptyPresentationState';
 import PresentationCard from '@/features/presentations/components/PresentationCard';
 import { Presentation } from '@/shared/types/presentation';
 

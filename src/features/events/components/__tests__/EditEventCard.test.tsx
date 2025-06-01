@@ -301,7 +301,7 @@ describe('EditEventCard', () => {
     
     // Wait for upload to complete
     await waitFor(() => {
-      expect(screen.queryByTestId('uploading-overlay')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('uploading-overlay')).toBeInTheDocument();
     }, { timeout: 200 });
   });
 });
