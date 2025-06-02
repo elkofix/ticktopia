@@ -165,7 +165,6 @@ export function PresentationForm({ eventId, initialData }: PresentationFormProps
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Lugar */}
-// In your PresentationForm component, update the place input field:
           <div className="md:col-span-2">
             <label
               htmlFor="place-input"

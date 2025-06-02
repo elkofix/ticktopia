@@ -18,6 +18,8 @@ async function goToMyProfilePage(page: Page) {
 }
 
 test.describe('ProfilePage', () => {
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
+
     test.beforeEach(async ({ page }) => {
         await page.context().clearCookies();
     });

@@ -86,6 +86,7 @@ export default function EditEventPage() {
                                 Presentaciones
                             </h2>
                             <Link
+                                data-testid="create-presentation-button"
                                 href={`/event-manager/presentation/manage/${id}`}
                                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                             >

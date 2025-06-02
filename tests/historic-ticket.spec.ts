@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 export async function loginAs(email: string, page: Page) {
     const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';

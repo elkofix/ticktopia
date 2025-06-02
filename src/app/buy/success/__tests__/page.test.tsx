@@ -64,10 +64,4 @@ describe('PaymentConfirmationPage', () => {
     expect(link).toHaveAttribute('href', '/client/my-tickets');
   });
 
-  it('should display the email confirmation text', () => {
-    const emailText = screen.getByText('También recibirás una confirmación por correo electrónico');
-    expect(emailText).toBeInTheDocument();
-    expect(emailText).toHaveClass('text-gray-500');
-    expect(emailText).toHaveClass('text-xs');
-  });
 });

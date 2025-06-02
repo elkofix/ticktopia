@@ -244,7 +244,7 @@ export default function QRTicketScanner() {
                     </div>
                 ) : (
                     <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <Camera className="w-16 h-16 text-gray-400" />
+                        <Camera className="w-16 h-16 text-gray-400" data-testid="camera"/>
                     </div>
                 )}
             </div>

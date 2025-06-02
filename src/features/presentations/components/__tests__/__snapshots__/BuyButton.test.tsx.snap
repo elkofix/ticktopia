@@ -4,6 +4,7 @@ exports[`BuyButton matches snapshot 1`] = `
 <DocumentFragment>
   <button
     class="bg-violet hover:bg-brand text-white py-4 px-12 text-lg font-bold rounded-full transition-colors duration-300 shadow-lg"
+    data-testid="buy-button"
   >
     COMPRAR BOLETOS
   </button>

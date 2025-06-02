@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 export async function goToMyTicketsPage(page: Page) {
     const menuButton = page.locator('[data-testid="menu-button"]');

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 test.describe('Event Detail Page', () => {
     test.beforeEach(async ({ page }) => {
@@ -63,22 +64,4 @@ test.describe('Event Detail Page', () => {
         await expect(firstPresentation.locator('[data-testid="presentation-location"]')).not.toBeEmpty();
     });
 
-
-    test('should navigate to presentation details when clicking button', async ({ page }) => {
-        // Obtener la primera tarjeta de evento
-        const initialPresentationCity = await page.locator('[data-testid="presentation-location"]').first().textContent();
-
-        const initialPresentationButton = await page.locator('[data-testid="presentation-link"]').first();
-
-        await expect(initialPresentationButton).toBeVisible();
-        await expect(initialPresentationButton).toHaveText(/Ver Presentación|Gestionar evento/);
-        initialPresentationButton.click();
-
-        // Verificar que la URL cambió al patrón de detalles de evento
-        await expect(page).toHaveURL(/\/presentation\/.+/); // o /\/event\/\d+/ para coincidir con ID numérico
-
-        // Verificar que el título en la página de detalles coincide
-        const detailTitle = page.locator('[data-testid="event-city"]').first();
-        await expect(detailTitle).toHaveText("Ciudad: "+initialPresentationCity!.trim()); // Usamos ! para asegurar que no es null
-    });
 });

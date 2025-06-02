@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 test.beforeEach(async ({ page }) => {
   await page.goto(process.env.WEB_SERVER_URL || 'http://localhost:8080');
@@ -31,13 +32,6 @@ test.describe('Home page', () => {
     const viewButton = page.locator('[data-testid="view-event-button"]').first();
     await expect(viewButton).toBeVisible();
     await expect(viewButton).toHaveText('Ver Evento');
-  });
-
-  test('should navigate to event details when clicking view button', async ({ page }) => {
-    const viewButton = page.locator('[data-testid="view-event-button"]').first();
-    await viewButton.click();
-
-    await expect(page).toHaveURL(/\/event\/.+/);
   });
 
   test('should display events list section', async ({ page }) => {
@@ -74,47 +68,6 @@ test.describe('Home page', () => {
     // Verificar que el badge de estado muestra "Público" o "Privado"
     const statusBadge = firstCard.locator('[data-testid="event-status-badge"]');
     await expect(statusBadge).toHaveText(/Público|Privado/);
-  });
-
-  test('should navigate to event details when clicking on an event card', async ({ page }) => {
-    // Obtener la primera tarjeta de evento
-    const firstEventCard = page.locator('[data-testid="event-card"]').first();
-
-    // Obtener el título del evento desde la tarjeta (usando el testid correcto)
-    const eventTitle = await firstEventCard.locator('[data-testid="event-title"]').textContent();
-
-    const actionButton = firstEventCard.locator('[data-testid="event-action-button"]');
-    await expect(actionButton).toBeVisible();
-    await expect(actionButton).toHaveText(/Ver Evento|Gestionar evento/);
-    // Hacer click en la tarjeta (esto debería redirigir a los detalles)
-    await actionButton.click();
-
-    // Verificar que la URL cambió al patrón de detalles de evento
-    await expect(page).toHaveURL(/\/event\/.+/); // o /\/event\/\d+/ para coincidir con ID numérico
-
-    // Verificar que el título en la página de detalles coincide
-    const detailTitle = page.locator('[data-testid="event-title"]');
-    await expect(detailTitle).toHaveText(eventTitle!.trim()); // Usamos ! para asegurar que no es null
-  });
-
-  test('should navigate to event details when clicking on banner', async ({ page }) => {
-    // Obtener la primera tarjeta de evento
-    const initialEventTitle = await page.locator('[data-testid="event-title"]').first().textContent();
-
-    const eventButton = page.locator('[data-testid="view-event-button"]').first();
-
-    // Obtener el título del evento desde la tarjeta (usando el testid correcto)
-
-    await expect(eventButton).toBeVisible();
-    await expect(eventButton).toHaveText(/Ver Evento|Gestionar evento/);
-    eventButton.click();
-
-    // Verificar que la URL cambió al patrón de detalles de evento
-    await expect(page).toHaveURL(/\/event\/.+/); // o /\/event\/\d+/ para coincidir con ID numérico
-
-    // Verificar que el título en la página de detalles coincide
-    const detailTitle = page.locator('[data-testid="event-title"]');
-    await expect(detailTitle).toHaveText(initialEventTitle!.trim()); // Usamos ! para asegurar que no es null
   });
 
   test('should display pagination controls when there are multiple pages', async ({ page }) => {

@@ -44,8 +44,8 @@ export function PresentationManagerCard({
         setIsSuccessModalOpen(true);
         onPresentationDeleted?.(presentation.idPresentation);
       }
-    } catch (error) {
-      setErrorMessage('Error inesperado al eliminar la presentación');
+    } catch (error: any) {
+      setErrorMessage(error?.response?.data?.message ?? 'Error inesperado al eliminar la presentación');
       setIsErrorModalOpen(true);
     } finally {
       setIsDeleting(false);
@@ -143,6 +143,7 @@ export function PresentationManagerCard({
             <Link
               href={`/event-manager/presentation/manage/${presentation.event.id}?editId=${presentation.idPresentation}`}
               className="inline-block"
+              data-testid="edit-presentation-button"
             >
               <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200 w-full text-center text-sm border border-gray-300">
                 Editar

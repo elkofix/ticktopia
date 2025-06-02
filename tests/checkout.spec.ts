@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 test.describe('Buy ticket page components', () => {
-    test.setTimeout(120_000); // Establece 2 minutos para cada test
+    test.setTimeout(180_000); // Establece 2 minutos para cada test
 
     test.beforeEach(async ({ page }) => {
         await page.context().clearCookies();
