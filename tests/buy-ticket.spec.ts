@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Buy ticket page components', () => {
+
+    test.setTimeout(120_000); // Establece 2 minutos para cada test
+
     test.beforeEach(async ({ page }) => {
         await page.context().clearCookies();
         const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';

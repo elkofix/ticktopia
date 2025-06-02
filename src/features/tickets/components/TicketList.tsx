@@ -189,7 +189,7 @@ export default function TicketsList({ tickets, historic }: TicketsListProps) {
                         </TransitionChild>
 
                         {/* Contenedor del modal centrado */}
-                        <div className="fixed inset-0 overflow-y-auto">
+                        <div className="fixed inset-0 overflow-y-auto" data-testid="qr-modals">
                             <div className="flex min-h-full items-center justify-center p-4 text-center">
                                 <TransitionChild
                                     as={Fragment}
@@ -205,6 +205,7 @@ export default function TicketsList({ tickets, historic }: TicketsListProps) {
                                         data-testid="modal-content"
                                     >
                                         <DialogTitle
+                                
                                             as="h3"
                                             className="text-lg font-medium leading-6 text-gray-900 mb-4"
                                             data-testid="modal-title"
