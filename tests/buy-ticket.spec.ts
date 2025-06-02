@@ -23,7 +23,6 @@ test.describe('Buy ticket page components', () => {
         const buyButton = page.locator('[data-testid="buy-button"]').first();
         buyButton.click();
         await page.waitForURL(/\/buy/);
-        await page.waitForLoadState('networkidle');
     })
 
     test('should load ticket selector correctly', async ({ page }) => {
