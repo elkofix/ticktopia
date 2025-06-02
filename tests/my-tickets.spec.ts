@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-async function goToMyTicketsPage(page: Page) {
+export async function goToMyTicketsPage(page: Page) {
     const menuButton = page.locator('[data-testid="menu-button"]');
     await menuButton.click();
     const myTicketsButton = page.locator('button:text("Mis Tickets")');
@@ -8,7 +8,7 @@ async function goToMyTicketsPage(page: Page) {
     await page.waitForURL(/\/client/);
 }
 
-async function loginAs(email: string, page: Page) {
+export async function loginAs(email: string, page: Page) {
     const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';
     await page.goto(webServerUrl + "/auth/login");
     await page.fill('input[name="email"]', email);
