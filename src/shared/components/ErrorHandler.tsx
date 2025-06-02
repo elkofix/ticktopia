@@ -9,7 +9,7 @@ export default function ErrorHandler(error: any) {
 
     
 
-    if (error?.status === 401 || error?.response?.status === 401 || checkSessionExpiration() || error?.message === "Unauthorized") {
+    if (error?.status === 401 || error?.response?.status === 401 || checkSessionExpiration() || error?.message === "Unauthorized" || error?.message === "Token not valid") {
         logout();
         redirect('/auth/login?logout=true');
     }

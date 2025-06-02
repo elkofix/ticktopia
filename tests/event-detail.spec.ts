@@ -59,8 +59,6 @@ test.describe('Event Detail Page', () => {
 
         const firstPresentation = presentations.first();
 
-
-        // Verificar elementos básicos de la presentación
         await expect(firstPresentation.locator('[data-testid="presentation-date"]')).not.toBeEmpty();
         await expect(firstPresentation.locator('[data-testid="presentation-location"]')).not.toBeEmpty();
     });

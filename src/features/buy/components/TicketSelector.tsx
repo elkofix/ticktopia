@@ -44,7 +44,7 @@ export default function TicketSelector({ capacity, price, presentationId }: Tick
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+    <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8" data-testid="ticket-selector">
       <h2 className="text-xl font-bold mb-6">Seleccionar Boletos</h2>
       
       <div className="flex items-center justify-between">

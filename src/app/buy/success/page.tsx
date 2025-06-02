@@ -70,10 +70,6 @@ export default function PaymentConfirmationPage() {
             Ir a Mis Tickets
           </Link>
 
-          {/* Texto adicional */}
-          <p className="text-gray-500 text-xs mt-4">
-            También recibirás una confirmación por correo electrónico
-          </p>
         </div>
       </div>
   )
