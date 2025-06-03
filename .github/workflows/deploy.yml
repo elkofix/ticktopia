@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
-        
+
       - name: Create sst.config.ts file
         run: |
           cat << 'EOF' > sst.config.ts
@@ -48,7 +48,7 @@ jobs:
 
       - name: Generate .env file
         run: |
-          echo "NEXT_PUBLIC_API_BASE_URL=https://back.ticktipia.shop/api" >> .env
+          echo "NEXT_PUBLIC_API_BASE_URL=https://back.ticktopia.shop/api" >> .env
           echo "NEXT_PUBLIC_CLOUDINARY_API_SECRET=D2s-jLkFbwtNsAxF4T1fNYT2LD8" >> .env
           echo "NEXT_PUBLIC_CLOUDINARY_API_KEY=141331289851547" >> .env
           echo "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dnmlo67cy" >> .env
