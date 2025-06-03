@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { QrCode } from 'lucide-react';
 import { Ticket } from '@/shared/types/ticket';
@@ -6,18 +6,37 @@ import TicketsList from '../TicketList';
 import { User } from '@/shared/types/event';
 
 // Mock the external components and icons
-jest.mock('qrcode.react', () => ({
-    QRCodeSVG: jest.fn(() => <div data-testid="qr-code" />),
-}));
+jest.mock('qrcode.react', () => {
+  const QRCodeSVG = jest.fn(() => <div data-testid="qr-code" />) as unknown as FC;
+  QRCodeSVG.displayName = 'MockQRCodeSVG';
 
-jest.mock('next/image', () => ({
-    __esModule: true,
-    default: (props: any) => <img {...props} />,
-}));
+  return {
+    QRCodeSVG,
+  };
+});
 
-jest.mock('lucide-react', () => ({
-    QrCode: jest.fn(() => <svg data-testid="qr-icon" />),
-}));
+jest.mock('next/image', () => {
+    const MockNextImage = (props: any) => {
+        // eslint-disable-next-line jsx-a11y/alt-text
+        return <img {...props} />;
+    };
+    MockNextImage.displayName = 'MockNextImage';
+
+    return {
+        __esModule: true,
+        default: MockNextImage,
+    };
+});
+jest.mock('lucide-react', () => {
+    const QrCode = jest.fn(() => <svg data-testid="qr-icon" />) as unknown as FC;
+    QrCode.displayName = 'MockLucideQrCode';
+
+    return {
+        QrCode,
+    };
+});
+
+
 
 describe('TicketsList Component', () => {
     const mockUser: User = {
