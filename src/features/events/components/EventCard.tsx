@@ -12,7 +12,7 @@ export function EventCard({ event, showControls = false }: EventCardProps) {
   const { hasRole } = useAuth();
   
   const shouldShowManagerControls = showControls && hasRole('event-manager');
-  
+  console.log('event', event);
   const buttonText = shouldShowManagerControls ? 'Gestionar evento' : 'Ver Evento';
   const eventUrl = shouldShowManagerControls 
     ? `/event-manager/events/manage/${event.id}` 

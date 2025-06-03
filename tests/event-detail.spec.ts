@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Event Detail Page', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(process.env.WEB_SERVER_URL || 'http://localhost:8080');
+        await page.goto(process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'https://www.ticktopia.shop');
         const viewButton = page.locator('[data-testid="view-event-button"]').first();
         await viewButton.click();
         await page.waitForLoadState('networkidle');

@@ -4,13 +4,21 @@ import '@testing-library/jest-dom';
 import { Presentation } from '@/shared/types/presentation';
 import EventPresentationsList from '../EventPresentationList';
 
-jest.mock('../../../../features/presentations/components/EmptyPresentationState', () => () => (
-  <div data-testid="empty-state">Empty State</div>
-));
+jest.mock('../../../../features/presentations/components/EmptyPresentationState', () => {
+  const EmptyPresentationState = () => (
+    <div data-testid="empty-state">Empty State</div>
+  );
+  EmptyPresentationState.displayName = 'MockEmptyPresentationState';
+  return EmptyPresentationState;
+});
 
-jest.mock('../../../../features/presentations/components/PresentationCard', () => ({ presentation }: any) => (
-  <div data-testid="presentation-card">{presentation.idPresentation}</div>
-));
+jest.mock('../../../../features/presentations/components/PresentationCard', () => {
+  const PresentationCard = ({ presentation }: any) => (
+    <div data-testid="presentation-card">{presentation.idPresentation}</div>
+  );
+  PresentationCard.displayName = 'MockPresentationCard';
+  return PresentationCard;
+});
 
 describe('EventPresentationsList', () => {
   const mockPresentations: Presentation[] = [

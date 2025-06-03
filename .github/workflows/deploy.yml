@@ -1,0 +1,64 @@
+name: SST workflow
+on:
+  push:
+    branches: ["develop"]
+
+# Concurrency group name ensures concurrent workflow runs wait for any in-progress job to finish
+#  concurrency:
+#  group: merge-${{ github.ref }}
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+jobs:
+  DeployApp:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BACKEND_URL: "http://100.27.45.55"
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+
+      - name: Create sst.config.ts file
+        run: |
+          cat << 'EOF' > sst.config.ts
+          /* eslint-disable */
+          /// <reference path="./.sst/platform/config.d.ts" />
+
+          export default $config({
+            app(input) {
+              return {
+                name: "notatourist",
+                removal: input?.stage === "production" ? "retain" : "remove",
+                home: "aws",
+              };
+            },
+            async run() {
+              new sst.aws.Nextjs("MyWeb");
+            },
+          });
+          EOF
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Generate .env file
+        run: |
+          echo "NEXT_PUBLIC_API_BASE_URL=https://back.ticktopia.shop/api" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_API_SECRET=D2s-jLkFbwtNsAxF4T1fNYT2LD8" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_API_KEY=141331289851547" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dnmlo67cy" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dnmlo67cy" >> .env
+          echo "NEXT_PUBLIC_WEB_SERVER_URL=https://www.ticktopia.shop" >> .env
+
+      - name: Install dependencies
+        run: |
+          npx sst unlock --stage develop
+          npm install
+      - name: Deploy using SST
+        run: |
+          npx sst deploy --stage develop

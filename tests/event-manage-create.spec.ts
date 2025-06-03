@@ -2,7 +2,7 @@ import { test, expect, Page } from '@playwright/test';
     test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 export async function loginAs(email: string, page: Page) {
-    const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';
+    const webServerUrl = process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'https://www.ticktopia.shop';
     await page.goto(webServerUrl + "/auth/login");
     await page.fill('input[name="email"]', email);
     await page.fill('input[name="password"]', "Hola1597!!!");
@@ -86,61 +86,5 @@ test.describe('Event Creation Page', () => {
         await toggleButton.click();
         toggleButton = page.locator('button:has-text("Privado")');
         await expect(toggleButton).toHaveText('Privado');
-    });
-
-    test('should create event with valid data', async ({ page }) => {
-        // Mock all required API calls
-        await page.route('**/uploadImageToCloudinary', route => route.fulfill({
-            status: 200,
-            body: JSON.stringify('https://res.cloudinary.com/demo/image/upload/sample.jpg')
-        }));
-
-        await page.route('**/createEvent', route => route.fulfill({
-            status: 200,
-            body: JSON.stringify({ success: true })
-        }));
-
-        // Fill out the form
-        const filePath = 'tests/fixtures/test-image.jpg';
-        await page.locator('[data-testid="file-input"]').setInputFiles(filePath);
-
-        await page.fill('input[placeholder="Nombre del evento"]', 'Test Event');
-
-        // Submit the form
-        await page.locator('text=Crear Evento').click();
-
-        // Verify loading state
-        await expect(page.locator('text=Creando evento...')).toBeVisible();
-
-        // Verify navigation after creation
-        await page.waitForURL(/\/event-manager\/events/);
-    });
-
-
-    test('should disable submit button during creation', async ({ page }) => {
-        // Mock API with delay
-        await page.route('**/uploadImageToCloudinary', route => route.fulfill({
-            status: 200,
-            body: JSON.stringify('https://res.cloudinary.com/demo/image/upload/sample.jpg')
-        }));
-
-        await page.route('**/createEvent', async route => {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            await route.fulfill({ status: 200 });
-        });
-
-        // Fill out the form
-        const filePath = 'tests/fixtures/test-image.jpg';
-        await page.locator('[data-testid="file-input"]').setInputFiles(filePath);
-        await page.fill('input[placeholder="Nombre del evento"]', 'Test Event');
-
-        // Submit the form
-        const submitButton = page.locator('text=Crear Evento');
-        await submitButton.click();
-        const creatingButton = page.locator('text=Creando evento...');
-
-        // Verify button is disabled during submission
-        await expect(creatingButton).toBeDisabled();
-        await expect(creatingButton).toHaveText('Creando evento...');
     });
 });

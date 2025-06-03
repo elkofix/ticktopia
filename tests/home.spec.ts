@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
     test.setTimeout(180_000); // Establece 2 minutos para cada test
 
 test.beforeEach(async ({ page }) => {
-  await page.goto(process.env.WEB_SERVER_URL || 'http://localhost:8080');
+  await page.goto(process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'https://www.ticktopia.shop');
 });
 
 test.describe('Home page', () => {

@@ -8,20 +8,27 @@ jest.mock('../../../../features/auth/hooks/useAuth', () => ({
   useAuth: jest.fn(),
 }));
 
-// Mock next/image
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: (props: any) => {
+jest.mock('next/image', () => {
+  const MockNextImage = (props: any) => {
     // eslint-disable-next-line jsx-a11y/alt-text
     return <img {...props} />;
-  },
-}));
+  };
+  MockNextImage.displayName = 'MockNextImage';
+
+  return {
+    __esModule: true,
+    default: MockNextImage,
+  };
+});
+
 
 // Mock next/link to make it easier to test
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
-    return <a href={href}>{children}</a>;
-  };
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
 });
 
 describe('EventCard', () => {
