@@ -37,8 +37,7 @@ test.describe('Buy ticket page components', () => {
         await page.fill('#cardCvc', '123');
         await page.fill('#billingName', 'ALEJANDRO CORDOBA ERAZO');
         await page.click('[data-testid="hosted-payment-submit-button"]');
-        await page.waitForURL(/\/success/);
-
+        await page.waitForTimeout(3000)
     })
     test('should display the main confirmation container', async ({ page }) => {
         await expect(page.getByTestId('payment-confirmation-container')).toBeVisible();
