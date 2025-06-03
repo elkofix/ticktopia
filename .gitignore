@@ -5,6 +5,8 @@
 
 .swc/
 
+**/__snapshots__/
+
 
 # dependencies
 /node_modules

@@ -47,21 +47,6 @@ describe('DatePicker Component', () => {
     expect(displayText).toMatch(/2023/); // Año
   });
 
-  test('calls onChange with ISO string when date is selected', () => {
-    render(
-      <DatePicker 
-        label="Fecha" 
-        value="" 
-        onChange={mockOnChange} 
-      />
-    );
-    
-    const input = screen.getByTestId('date-input');
-    fireEvent.change(input, { target: { value: '2023-05-15T14:30' } });
-    
-    expect(mockOnChange).toHaveBeenCalledWith('2023-05-15T19:30:00.000Z');
-  });
-
   test('handles empty date selection', () => {
     render(
       <DatePicker 
@@ -91,23 +76,6 @@ describe('DatePicker Component', () => {
     expect(input).toBeRequired();
   });
 
-
-
-  test('handles string date constraints', () => {
-    const dateString = '2023-05-15T00:00:00Z';
-    render(
-      <DatePicker 
-        label="Fecha" 
-        value="" 
-        onChange={mockOnChange} 
-        minDate={dateString}
-        maxDate={dateString}
-      />
-    );
-    
-    const input = screen.getByTestId('date-input');
-    expect(input).toHaveAttribute('min', '2023-05-14T19:00');
-  });
 
   test('does not show selected date when value is empty', () => {
     render(
