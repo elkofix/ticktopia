@@ -30,7 +30,7 @@ jobs:
         curl https://back.ticktopia.shop/api/seed
 
     - name: Run Playwright tests against deployed site
-      run: npx playwright test
+      run: npx playwright test --workers=6
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
