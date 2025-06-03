@@ -6,7 +6,7 @@ test.describe('Buy ticket page components', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.context().clearCookies();
-        const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';
+        const webServerUrl = process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'http://localhost:8080';
         await page.goto(webServerUrl + "/auth/login");
         await page.fill('input[name="email"]', 'isahc221024@gmail.com');
         await page.fill('input[name="password"]', 'Hola1597!!!');

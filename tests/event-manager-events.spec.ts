@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
 export async function loginAs(email: string, page: Page) {
-    const webServerUrl = process.env.WEB_SERVER_URL || 'http://localhost:8080';
+    const webServerUrl = process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'http://localhost:8080';
     await page.goto(webServerUrl + "/auth/login");
     await page.fill('input[name="email"]', email);
     await page.fill('input[name="password"]', "Hola1597!!!");

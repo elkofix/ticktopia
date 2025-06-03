@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Presentation Detail Page', () => {
     test.beforeEach(async ({ page }) => {
         await page.context().clearCookies();
-        await page.goto(process.env.WEB_SERVER_URL || 'http://localhost:8080');
+        await page.goto(process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'http://localhost:8080');
         const viewButton = page.locator('[data-testid="view-event-button"]').first();
         await viewButton.click();
         const initialPresentationButton = await page.locator('[data-testid="presentation-link"]').first();
