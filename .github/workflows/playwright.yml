@@ -25,6 +25,10 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    - name: Seed API data (GET)
+      run: |
+        curl https://back.ticktopia.shop/api/seed
+
     - name: Run Playwright tests against deployed site
       run: npx playwright test
 
