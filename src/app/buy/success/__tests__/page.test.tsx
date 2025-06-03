@@ -4,9 +4,11 @@ import PaymentConfirmationPage from '../page';
 
 // Mock the next/link component
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => (
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
 });
 
 describe('PaymentConfirmationPage', () => {

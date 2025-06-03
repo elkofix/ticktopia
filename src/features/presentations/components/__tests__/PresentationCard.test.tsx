@@ -6,28 +6,26 @@ import '@testing-library/jest-dom';
 import { Presentation } from '@/shared/types/presentation';
 
 // Mock next/image and next/link
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: (props: any) => (
-    <img 
-      {...props} 
-      src={props.src} 
-      alt={props.alt} 
-      data-testid="presentation-image"
-      style={{
-        position: 'absolute',
-        height: '100%',
-        width: '100%',
-        objectFit: 'cover'
-      }}
-    />
-  ),
-}));
+jest.mock('next/image', () => {
+  const MockNextImage = (props: any) => {
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <img {...props} />;
+  };
+  MockNextImage.displayName = 'MockNextImage';
+
+  return {
+    __esModule: true,
+    default: MockNextImage,
+  };
+});
+
 
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
-    return <a href={href}>{children}</a>;
-  };
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
 });
 
 // Mock the date formatter

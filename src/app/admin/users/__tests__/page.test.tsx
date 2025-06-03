@@ -1,4 +1,3 @@
-// users.test.tsx
 import { render, screen, waitFor } from '@testing-library/react';
 import UsersPage from '../page';
 
@@ -8,24 +7,34 @@ jest.mock('../../../../features/users/users.client.api', () => ({
 }));
 
 // Mock de los componentes hijos
-jest.mock('../../../../features/users/components/UserList', () => ({
-  __esModule: true,
-  default: ({ users }: { users: any[] }) => (
+jest.mock('../../../../features/users/components/UserList', () => {
+  const MockUserList = ({ users }: { users: any[] }) => (
     <div data-testid="user-list-mock">
       {users.map(user => (
         <div key={user.id}>{user.name}</div>
       ))}
     </div>
-  ),
-}));
+  );
+  MockUserList.displayName = 'MockUserList';
+  return {
+    __esModule: true,
+    default: MockUserList,
+  };
+});
 
-jest.mock('../../../../shared/components/LoadingSpinner', () => () => (
-  <div data-testid="loading-spinner">Loading...</div>
-));
+jest.mock('../../../../shared/components/LoadingSpinner', () => {
+  const LoadingSpinner = () => <div data-testid="loading-spinner">Loading...</div>;
+  LoadingSpinner.displayName = 'MockLoadingSpinner';
+  return LoadingSpinner;
+});
 
-jest.mock('../../../../shared/components/ErrorHandler', () => ({ message }: { message: string }) => (
-  <div data-testid="error-handler">{message}</div>
-));
+jest.mock('../../../../shared/components/ErrorHandler', () => {
+  const ErrorHandler = ({ message }: { message: string }) => (
+    <div data-testid="error-handler">{message}</div>
+  );
+  ErrorHandler.displayName = 'MockErrorHandler';
+  return ErrorHandler;
+});
 
 // Datos de prueba
 const mockUsers = [

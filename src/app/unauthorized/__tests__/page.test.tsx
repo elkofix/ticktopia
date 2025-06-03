@@ -2,12 +2,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Unauthorized from '../page';
 
-// Mock next/link to properly test navigation
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
-    return <a href={href}>{children}</a>;
-  };
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
 });
+
 
 describe('Unauthorized Component', () => {
   beforeEach(() => {

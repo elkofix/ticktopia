@@ -4,17 +4,27 @@ import { PresentationManagerCard } from '../PresentationManagerCard';
 import { deletePresentation } from '../../presentation.client.api';
 import '@testing-library/jest-dom';
 
-// Mock dependencies
-jest.mock('next/image', () => ({
-  __esModule: true,
-  default: (props: any) => <img {...props} />,
-}));
+jest.mock('next/image', () => {
+  const MockNextImage = (props: any) => {
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <img {...props} />;
+  };
+  MockNextImage.displayName = 'MockNextImage';
 
-jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
-    return <a href={href}>{children}</a>;
+  return {
+    __esModule: true,
+    default: MockNextImage,
   };
 });
+
+jest.mock('next/link', () => {
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  );
+  MockLink.displayName = 'MockNextLink';
+  return MockLink;
+});
+
 
 jest.mock('../../presentation.client.api', () => ({
   deletePresentation: jest.fn(),

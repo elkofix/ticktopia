@@ -19,6 +19,26 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+        
+      - name: Create sst.config.ts file
+        run: |
+          cat << 'EOF' > sst.config.ts
+          /* eslint-disable */
+          /// <reference path="./.sst/platform/config.d.ts" />
+
+          export default $config({
+            app(input) {
+              return {
+                name: "notatourist",
+                removal: input?.stage === "production" ? "retain" : "remove",
+                home: "aws",
+              };
+            },
+            async run() {
+              new sst.aws.Nextjs("MyWeb");
+            },
+          });
+          EOF
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
