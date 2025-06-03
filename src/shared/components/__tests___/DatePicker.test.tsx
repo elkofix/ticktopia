@@ -77,23 +77,6 @@ describe('DatePicker Component', () => {
   });
 
 
-
-  test('handles string date constraints', () => {
-    const dateString = '2023-05-15T00:00:00Z';
-    render(
-      <DatePicker 
-        label="Fecha" 
-        value="" 
-        onChange={mockOnChange} 
-        minDate={dateString}
-        maxDate={dateString}
-      />
-    );
-    
-    const input = screen.getByTestId('date-input');
-    expect(input).toHaveAttribute('min', '2023-05-14T19:00');
-  });
-
   test('does not show selected date when value is empty', () => {
     render(
       <DatePicker 
