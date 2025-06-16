@@ -1,0 +1,32 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate .env file
+        run: |
+          echo "NEXT_PUBLIC_API_BASE_URL=https://back.ticktopia.shop/api" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_API_SECRET=${{secrets.NEXT_PUBLIC_CLOUDINARY_API_SECRET}}" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_API_KEY=${{secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY}}" >> .env
+          echo "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=${{secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}}" >> .env
+          echo "NEXT_PUBLIC_WEB_SERVER_URL=https://www.ticktopia.shop" >> .env
+
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test -- -u
